@@ -1,10 +1,12 @@
 express = require 'express'
-app = express()
+fs = require 'fs'
+
 counter = 0
 
-fs = require 'fs'
 DIR = JSON.parse(fs.readFileSync 'config.json').dir
 console.log 'Current output dir: ' + DIR
+
+app = express()
 
 app.get '/', (req, res) ->
 	# set content-type
@@ -18,6 +20,7 @@ app.get '/', (req, res) ->
 			console.log err
 			res.type 'text/plain'
 			res.send 'ERROR 404: file not found'
+			return
 		res.send data
 	console.log 'Client queried for: ' + JSON.stringify req.query
 	console.log 'Answered to request #' + (++counter)

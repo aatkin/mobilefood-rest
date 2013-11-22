@@ -4,15 +4,15 @@
 
   express = require('express');
 
-  app = express();
+  fs = require('fs');
 
   counter = 0;
-
-  fs = require('fs');
 
   DIR = JSON.parse(fs.readFileSync('config.json')).dir;
 
   console.log('Current output dir: ' + DIR);
+
+  app = express();
 
   app.get('/', function(req, res) {
     var restaurant, week, year;
@@ -25,6 +25,7 @@
         console.log(err);
         res.type('text/plain');
         res.send('ERROR 404: file not found');
+        return;
       }
       return res.send(data);
     });
