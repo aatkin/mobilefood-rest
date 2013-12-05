@@ -23,7 +23,7 @@ app.get '/', (req, res) ->
 			return
 		res.type 'text/json'
 		res.send data
-	console.log 'Client queried for: ' + JSON.stringify req.query
+	console.log 'Client queried for: ' + JSON.stringify(req.query)
 	console.log 'Answered to request #' + (++counter)
 
 app.listen process.env.PORT || 4730
