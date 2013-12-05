@@ -1,7 +1,6 @@
 mobilefood-rest
 ===============
-Awesome REST-service for Mobile Food -project, written mainly in JavaScript and a bunch of libraries.
-
+Awesome REST-service for Mobile Food -project, as part of Exercise Project -course at University of Turku. Written mainly in CoffeeScript compiled to JavaScript, using NodeJS and ExpressJS.
 
 Install
 -------
