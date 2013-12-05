@@ -15,18 +15,19 @@
   app = express();
 
   app.get('/', function(req, res) {
-    var restaurant, week, year;
-    res.type('text/json');
+    var filepath, restaurant, week, year;
     restaurant = req.query.restaurant;
     year = req.query.year;
     week = req.query.week;
-    fs.readFile(DIR + year + '_w' + week + '_' + restaurant + '.json', 'utf8', function(err, data) {
+    filepath = DIR + year + '_w' + week + '_' + restaurant + '.json';
+    fs.readFile(filepath, 'utf8', function(err, data) {
       if (err) {
         console.log(err);
         res.type('text/plain');
         res.send('ERROR 404: file not found');
         return;
       }
+      res.type('text/json');
       return res.send(data);
     });
     console.log('Client queried for: ' + JSON.stringify(req.query));
