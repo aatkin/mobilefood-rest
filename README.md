@@ -4,4 +4,5 @@ Awesome REST-service for Mobile Food -project, as part of Exercise Project -cour
 
 Install
 -------
-*Use "npm install" to install dependencies
+* Use "npm install" to install dependencies
+* Use "npm install --dev" to install development dependencies
