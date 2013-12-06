@@ -13,7 +13,7 @@
     ],
     "description": "Mobilefood-project REST-service",
     "scripts": {
-    	"start": "node ./src/js/app.js"
+    	"start": "coffee --output ./src/js/ --compile ./src/ && node ./src/js/app.js"
     },
     "repository": {
         "type": "git",
