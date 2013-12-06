@@ -6,3 +6,4 @@ Install
 -------
 * Use "npm install" to install dependencies
 * Use "npm install --dev" to install development dependencies
+* Use "npm start" to fire up starting script (compile Coffeescript files to JS & start up server)
