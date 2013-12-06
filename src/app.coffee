@@ -8,7 +8,7 @@ console.log 'Current output dir: ' + DIR
 
 app = express()
 
-app.get '/', (req, res) ->
+app.get '/mobilerest/', (req, res) ->
 	# retrieve query parameters
 	restaurant = req.query.restaurant
 	restaurantDir = restaurant + '/'
@@ -29,7 +29,7 @@ app.get '/', (req, res) ->
 	console.log 'Answered to request #' + (++counter)
 
 # queries all newest unica restaurants
-app.get '/queryAllUnicaNewest', (req, res) ->
+app.get '/mobilerest/queryAllUnicaNewest', (req, res) ->
 	currentDate = new Date()
 	year = currentDate.getFullYear()
 	week = currentDate.getWeek()

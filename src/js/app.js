@@ -14,7 +14,7 @@
 
   app = express();
 
-  app.get('/', function(req, res) {
+  app.get('/mobilerest/', function(req, res) {
     var filepath, restaurant, restaurantDir, week, year;
     restaurant = req.query.restaurant;
     restaurantDir = restaurant + '/';
@@ -35,7 +35,7 @@
     return console.log('Answered to request #' + (++counter));
   });
 
-  app.get('/queryAllUnicaNewest', function(req, res) {
+  app.get('/mobilerest/queryAllUnicaNewest', function(req, res) {
     var currentDate, filepath, week, year;
     currentDate = new Date();
     year = currentDate.getFullYear();
