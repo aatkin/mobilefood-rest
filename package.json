@@ -1,8 +1,29 @@
 {
-  "name": "mobilefood-rest",
-  "description": "Mobilefood rest services",
-  "version": "0.0.5",
-  "dependencies": {
-    "express" : "3.x"
-  }
+    "name": "mobilefood-rest",
+    "version": "0.0.6",
+    "contributors": [
+	    {
+	        "name": "Anssi Kinnunen",
+	        "email": "<aatkin@utu.fi>"
+	    }, 
+	    {
+	        "name": "Ville Ahti",
+	        "email": "<vianah@utu.fi>"
+	    }
+    ],
+    "description": "Mobilefood-project REST-service",
+    "scripts": {
+    	"start": "node ./src/js/app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aatkin/mobilefood-rest.git"
+    },
+    "dependencies": {
+        "express": "3.x"
+    },
+    "devDependencies": {
+        "loadtest": "0.2.x"
+    },
+    "license": "MIT"
 }
