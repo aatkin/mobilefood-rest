@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# Init script for the mobilefood-rest service, running Node.js with forever
+#
+### BEGIN INIT INFO
+# Provides:             mobilerest
+# Required-Start:       $syslog $remote_fs
+# Required-Stop:        $syslog $remote_fs
+# Should-Start:         $local_fs
+# Should-Stop:          $local_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Mobilefood rest service
+# Description:          Mobilefood rest service
+### END INIT INFO
+#
+NAME="Mobilerest"
+APPLICATION_DIRECTORY=/var/www/projects/mobilerest
+APPLICATION_START=src/js/app.js
+PIDFILE=/var/run/mobilerest.pid
+LOGFILE=/var/log/mobilerest.log
+
+start() {
+    echo "Starting $NAME"
+    forever --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY -a -l $LOGFILE --minUpTime 5000 --spinSleepTime 2000 start $APPLICATION_START &
+    RETVAL=$?
+}
+
+stop() {
+    if [ -f $PIDFILE ]; then
+        echo "Shutting down $NAME"
+        forever stop $APPLICATION_START
+        rm -f $PIDFILE
+        RETVAL=$?
+    else
+        echo "$NAME is not running."
+        RETVAL=0
+    fi
+}
+
+restart() {
+    echo "Restarting $NAME"
+    stop
+    start
+}
+
+status() {
+    echo "Status for $NAME:"
+    forever list
+    RETVAL=$?
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    restart)
+        restart
+        ;;
+    *)
+        echo "Usage: {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+exit $RETVAL

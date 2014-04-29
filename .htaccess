@@ -1,0 +1,7 @@
+# AuthUserFile /var/.htpasswd
+# AuthType Basic
+# AuthName "JScripts"
+# Require valid-user
+
+# Options -Indexes
+RedirectMatch 403 ^/*
