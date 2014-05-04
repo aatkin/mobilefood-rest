@@ -1,8 +1,9 @@
 express = require 'express'
 fs = require 'fs'
+path = require 'path'
 
 counter = 0
-configFile = '/var/www/projects/mobilerest/config.json'
+configFile = path.resolve('./config.json')
 
 DIR = JSON.parse(fs.readFileSync(configFile)).dir
 console.log 'Current output dir: ' + DIR
@@ -56,7 +57,7 @@ app.get '/mobilerest/queryAllUnicaNewest', (req, res) ->
         console.log 'Answered to request #' + (++counter)
 
 app.get '/mobilerest/log', (req, res) ->
-    filepath = '/home/brigesh/koodit/git/mobilefood-parser/log'
+    filepath = path.resolve('./log')
     fs.readFile filepath, 'utf8', (err, data) ->
         if err
             msg = "Logfile not available"
