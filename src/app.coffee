@@ -4,10 +4,10 @@ path = require 'path'
 
 counter = 0
 configFile = path.resolve('./config.json')
-LOG_FILEPATH = path.resolve('./log')
 
 DIR = JSON.parse(fs.readFileSync(configFile)).dir
-console.log 'Current output dir: ' + DIR
+LOG_FILEPATH = JSON.parse(fs.readFileSync(configFile)).logpath
+console.log 'Current output dir: ' + DIR + ', logfile path: ' + LOG_FILEPATH
 
 app = express()
 
