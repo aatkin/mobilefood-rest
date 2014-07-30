@@ -1,6 +1,9 @@
 express = require 'express'
 fs = require 'fs'
 path = require 'path'
+winston = require 'winston'
+
+logger = 
 
 try
     configFile = path.resolve('./config.json')
