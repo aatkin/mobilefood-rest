@@ -2,17 +2,22 @@ express = require 'express'
 fs = require 'fs'
 path = require 'path'
 
-counter = 0
-configFile = path.resolve('./config.json')
+try
+    configFile = path.resolve('./config.json')
+    DIR = JSON.parse(path.resolve(fs.readFileSync(configFile))).dir
+    LOG_FILEPATH = JSON.parse(path.resolve(fs.readFileSync(configFile))).logpath
+catch error
+    logger.fatal('Error happened while retrieving configuration information: \n' + error)
+    express = fs = path = log4js = logger = configFile = DIR = LOG_FILEPATH = null
+    process.exit(1)
 
-DIR = JSON.parse(fs.readFileSync(configFile)).dir
-LOG_FILEPATH = JSON.parse(fs.readFileSync(configFile)).logpath
-console.log 'Current output dir: ' + DIR + ', logfile path: ' + LOG_FILEPATH
+logger.info('Current output dir: ' + DIR + ', logfile path: ' + LOG_FILEPATH)
 
 app = express()
+app.enable('trust proxy')
+counter = 0
 
 serveErrorMessage = (error, msg, res) ->
-    console.log error
     message = {
         "status": "error",
         "message": msg
@@ -20,10 +25,67 @@ serveErrorMessage = (error, msg, res) ->
     res.type 'text/json'
     res.send message
 
+#
+# GET
+#
+app.get '/mobilerest/log', (req, res) ->
+    logger.info('Received GET-request from ' + req.ip)
+    fs.readFile LOG_FILEPATH, 'utf8', (err, data) ->
+        if err
+            msg = "File not found - missing log file"
+            serveErrorMessage(err, msg, res)
+            return
+        else
+            res.type 'text/plain'
+            res.send data
+
+#
+# GET
+# Returns specified food list from file system as JSON.
+#
+app.get '/mobilerest/:restaurant/:year/:week', (req, res) ->
+    logger.info('Received GET-request from ' + req.ip)
+    restaurant = req.params('restaurant').toLowerCase() + path.sep
+    year = req.params('year') + path.sep
+    week = req.params('week') + path.sep
+    filePath = DIR + restaurant + year + week
+    fs.readFile filePath, 'utf8', (err, data) ->
+        if err
+            logger.error(err + "\n")
+            msg = "File not found - bad restaurant name or week number"
+            serveErrorMessage(err, msg, res)
+            return
+        else
+            res.type('text/json')
+            res.send(data)
+            return
+
+#
+# GET
+# Returns food list marked as 'current' from file system as JSON.
+#
+app.get 'mobilerest/:restaurant/current', (req, res) ->
+    logger.info('Received GET-request from ' + req.ip)
+    restaurant = req.params('restaurant').toLowerCase() + path.sep
+    filePath = DIR + restaurant + 'current' + path.sep
+    fs.readFile filePath, 'utf8', (err, data) ->
+        if err
+            logger.error(err + "\n")
+            msg = "File not found - bad restaurant name or missing food list"
+            serveErrorMessage(err, msg, res)
+            return
+        else
+            res.type('text/json')
+            res.send(data)
+            return
+
+#
+### DEPRECATED API ###
+#
+
 app.get '/mobilerest/', (req, res) ->
-    # retrieve query parameters
-    restaurant = req.query.restaurant
-    restaurantDir = restaurant + '/'
+    restaurant = req.params.restaurant
+    restaurantDir = restaurant + path.sep
     year = req.query.year
     week = req.query.week
     filepath = DIR + restaurantDir + year + '_w' + week + '_' + restaurant + '.json'
@@ -57,14 +119,6 @@ app.get '/mobilerest/queryAllUnicaNewest', (req, res) ->
         console.log 'Client queried for: ' + JSON.stringify(req.query)
         console.log 'Answered to request #' + (++counter)
 
-app.get '/mobilerest/log', (req, res) ->
-    fs.readFile LOG_FILEPATH, 'utf8', (err, data) ->
-        if err
-            msg = "Logfile not available"
-            serveErrorMessage(err, msg, res)
-            return
-        res.type 'text/plain'
-        res.send data
 
 Date.prototype.getWeek = ->
     target = new Date(this.valueOf())
