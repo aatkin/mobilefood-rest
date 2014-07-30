@@ -1,12 +1,12 @@
 {
   "name": "mobilefood-rest",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": "true",
   "contributors": [
     {
       "name": "Anssi Kinnunen",
       "email": "<aatkin@utu.fi>"
-    }, 
+    },
     {
       "name": "Ville Ahti",
       "email": "<vianah@utu.fi>"
@@ -19,11 +19,15 @@
   },
   "dependencies": {
     "express": "3.x",
-    "winston": "0.7.x",
+    "winston": "0.7.x"
+  },
+  "devDependencies": {
     "grunt": "0.4.x",
-    "grunt-contrib-watch": "0.6.x",
+    "grunt-concurrent": "^0.5.0",
     "grunt-contrib-coffee": "0.10.x",
-    "grunt-mocha-test": "0.11.x"
+    "grunt-contrib-watch": "0.6.x",
+    "grunt-mocha-test": "0.11.x",
+    "grunt-nodemon": "^0.3.0"
   },
   "license": "MIT"
 }
