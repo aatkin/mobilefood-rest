@@ -31,7 +31,7 @@ try
 catch error
     logger.error('Error happened while retrieving configuration information:
         \n' + error)
-    express = fs = path = log4js = logger = configFile =
+    express = fs = path = winston = logger = configFile =
         DIR = LOG_FILEPATH = null
     process.exit(1)
 
