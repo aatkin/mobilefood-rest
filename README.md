@@ -4,6 +4,7 @@ Awesome REST-service for Mobile Food -project, as part of Exercise Project -cour
 
 Install
 -------
-* Use "npm install" to install dependencies
-* Use "npm install --dev" to install development dependencies
-* Use Grunt to build before running the app: `grunt && node app.js`
+* Use `npm install --production` to install only required dependencies
+* Use `npm install` to install development dependencies
+* Build the app from command line: `grunt compile && node app.js`
+* Spice up development process by using nodemon & grunt-watch: `grunt workflow`
