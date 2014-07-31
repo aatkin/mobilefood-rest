@@ -1,6 +1,6 @@
 {
   "name": "mobilefood-rest",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": "true",
   "contributors": [
     {
@@ -19,12 +19,12 @@
   },
   "dependencies": {
     "express": "3.x",
-    "winston": "0.7.x"
+    "winston": "0.7.x",
+    "grunt": "0.4.x",
+    "grunt-contrib-coffee": "0.10.x"
   },
   "devDependencies": {
-    "grunt": "0.4.x",
     "grunt-concurrent": "^0.5.0",
-    "grunt-contrib-coffee": "0.10.x",
     "grunt-contrib-watch": "0.6.x",
     "grunt-mocha-test": "0.11.x",
     "grunt-nodemon": "^0.3.0"

@@ -5,10 +5,18 @@ winston = require 'winston'
 
 logger = new (winston.Logger)({
     transports: [
-        new (winston.transports.Console)({ level: 'warn', colorize: 'true' }),
+        new (winston.transports.Console)(
+            {
+                level: 'warn',
+                colorize: 'true',
+                timestamp: true
+            }),
         new (winston.transports.File)(
             {
-                filename: 'mobilelog.log', level: 'silly'
+                filename: 'mobilelog.log',
+                level: 'silly',
+                maxsize: 2048000,
+                json: false
             })
     ]
 })
@@ -34,13 +42,13 @@ port = process.env.PORT || 4730
 logger.info("Listening on port " + port)
 app.listen port
 
-serveErrorMessage = (msg, res) ->
+serveErrorMessage = (error, msg, res) ->
     message = {
         "status": "error",
         "message": msg
     }
     res.type 'text/json'
-    res.send message
+    res.send(error, message)
 
 #
 # MIDDLEWARE
@@ -56,12 +64,12 @@ app.use (req, res, next) ->
 app.get '/mobilerest/log', (req, res) ->
     fs.readFile LOG_FILEPATH, 'utf8', (err, data) ->
         if err
-            msg = "File not found - missing log file"
-            serveErrorMessage(msg, res)
-            return
+            logger.debug(err + "\n")
+            msg = "Error happened while reading file"
+            serveErrorMessage(404, msg, res)
         else
             res.type 'text/plain'
-            res.send data
+            res.send(200, data)
 
 #
 # GET
@@ -72,14 +80,12 @@ app.get '/mobilerest/:restaurant/current', (req, res) ->
     filePath = DIR + restaurant + 'current' + path.sep
     fs.readFile filePath, 'utf8', (err, data) ->
         if err
-            logger.verbose(err + "\n")
-            msg = "File not found - bad restaurant name or missing food list"
-            serveErrorMessage(msg, res)
-            return
+            logger.debug(err + "\n")
+            msg = "Error happened while reading file - missing food list?"
+            serveErrorMessage(404, msg, res)
         else
             res.type('text/json')
-            res.send(data)
-            return
+            res.send(200, data)
 
 #
 # GET
@@ -93,13 +99,11 @@ app.get '/mobilerest/:restaurant/:year/:week', (req, res) ->
     fs.readFile filePath, 'utf8', (err, data) ->
         if err
             logger.verbose(err + "\n")
-            msg = "File not found - bad restaurant name or week number"
-            serveErrorMessage(msg, res)
-            return
+            msg = "Error happened while reading file - missing food list?"
+            serveErrorMessage(404, msg, res)
         else
             res.type('text/json')
-            res.send(data)
-            return
+            res.send(200, data)
 
 #
 # GET
@@ -107,16 +111,4 @@ app.get '/mobilerest/:restaurant/:year/:week', (req, res) ->
 #
 app.get '*', (req, res) ->
     msg = "Bad request"
-    serveErrorMessage(msg, res)
-    return
-
-
-# Date.prototype.getWeek = ->
-#     target = new Date(this.valueOf())
-#     dayNr = (this.getDay() + 6) % 7
-#     target.setDate(target.getDate() - dayNr + 3)
-#     firstThursday = target.valueOf()
-#     target.setMonth 0, 1
-#     if target.getDay() != 4
-#         target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7)
-#     Math.ceil(1 + (firstThursday - target) / 604800000)
+    serveErrorMessage(400, msg, res)
