@@ -11,7 +11,6 @@ exports.init = init = (config) ->
             JSON.parse(fs.readFileSync(configfile)).logfile
         dir = argv.dir || config?.dir ||
             JSON.parse(fs.readFileSync(configfile)).dir
-        # console.log "config: #{config}, log: #{log}, dir: #{dir}"
         app.set('configfile', configfile)
         app.set('logfile', logfile)
         app.set('dir', dir)

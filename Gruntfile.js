@@ -27,9 +27,9 @@ module.exports = function(grunt) {
         nodemon: {
             dev: {
                 script: 'build/app.js',
-                // options: {
-                //     args: ['--log=oo.log']
-                // }
+                options: {
+                    args: ['--dir=test/testdata']
+                }
             }
         },
         coffee: {
