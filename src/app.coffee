@@ -22,9 +22,10 @@ exports.init = init = ->
         process.exit(1)
 
 exports.start = start = ->
-    port = argv.port || process.env.PORT || 4730
-    app.listen port
-    console.log "listening on #{port}"
+    if app
+        port = argv.port || process.env.PORT || 4730
+        app.listen port
+        console.log "listening on #{port}"
 
 exports.stop = stop = ->
     if app
