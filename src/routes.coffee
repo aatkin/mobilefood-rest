@@ -16,7 +16,6 @@ serveErrorMessage = (error, msg, res) ->
 exports.log = log = express.Router()
 
 log.get '/log', (req, res) ->
-    logpath = path.resolve(require('./app').app.get('logfile'))
     fs.readFile logpath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file"
@@ -40,7 +39,6 @@ restaurants.get '/:restaurant/current', (req, res) ->
     restaurant = req.params.restaurant.toLowerCase()
     filepath = path.resolve(path.join(
         dir, restaurant, 'current', "foodlist.json"))
-    console.log filepath
     fs.readFile filepath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file - missing food list?"
@@ -59,7 +57,6 @@ restaurants.get '/:restaurant/:year/:week', (req, res) ->
     week = req.params.week
     filepath = path.resolve(path.join(
         dir, restaurant, year, week, "foodlist.json"))
-    console.log filepath
     fs.readFile filepath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file - missing food list?"
