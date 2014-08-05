@@ -1,5 +1,5 @@
-mobilefood-rest
-===============
+# mobilefood-rest [![Build Status](https://travis-ci.org/aatkin/mobilefood-rest.png)](https://travis-ci.org/aatkin/mobilefood-rest)
+
 Awesome REST-service for Mobile Food -project, as part of Exercise Project -course at University of Turku. Written mainly in CoffeeScript compiled to JavaScript, using NodeJS and ExpressJS.
 
 Install
