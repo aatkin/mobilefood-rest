@@ -52,10 +52,10 @@ describe 'restaurants RESTful GET-requests', ->
                     .get('/mobilerest/unica/current')
                     .expect('Content-Type', /json/)
                     .expect(404, done)
-        it 'should return 404 given url /mobilerest/unica/33/food
+        it 'should return 404 given url /mobilerest/unica/2014/34
             and no files to serve', (done) ->
                 request(app)
-                    .get('/mobilerest/unica/33/food')
+                    .get('/mobilerest/unica/2014/34')
                     .expect('Content-Type', /json/)
                     .expect(404, done)
 
