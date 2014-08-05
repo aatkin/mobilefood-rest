@@ -6,10 +6,10 @@ argv = app = configfile = logfile = dir = null
 
 exports.init = init = (config) ->
     try
-        configfile = argv.config || config?.configfile || 'config.json'
-        logfile = argv.log || config?.logfile ||
+        configfile = argv?.config || config?.configfile || 'config.json'
+        logfile = argv?.log || config?.logfile ||
             JSON.parse(fs.readFileSync(configfile)).logfile
-        dir = argv.dir || config?.dir ||
+        dir = argv?.dir || config?.dir ||
             JSON.parse(fs.readFileSync(configfile)).dir
         app.set('configfile', configfile)
         app.set('logfile', logfile)

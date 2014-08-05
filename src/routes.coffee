@@ -16,6 +16,7 @@ serveErrorMessage = (error, msg, res) ->
 exports.log = log = express.Router()
 
 log.get '/log', (req, res) ->
+    logpath = path.resolve(require('./app').app.get('logfile'))
     fs.readFile logpath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file"
