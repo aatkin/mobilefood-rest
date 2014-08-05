@@ -1,7 +1,6 @@
 express = require 'express'
 fs = require 'fs'
 path = require 'path'
-app = require './app'
 
 serveErrorMessage = (error, msg, res) ->
     message = {
@@ -17,7 +16,7 @@ serveErrorMessage = (error, msg, res) ->
 exports.log = log = express.Router()
 
 log.get '/log', (req, res) ->
-    fs.readFile app.__LOGPATH, 'utf8', (err, data) ->
+    fs.readFile '/log', 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file"
             serveErrorMessage(404, msg, res)
@@ -37,7 +36,7 @@ exports.restaurants = restaurants = express.Router()
 #
 restaurants.get '/:restaurant/current', (req, res) ->
     restaurant = req.params.restaurant.toLowerCase() + path.sep
-    filePath = app.__DIR + restaurant + 'current' + path.sep
+    filePath = '/' + restaurant + 'current' + path.sep
     fs.readFile filePath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file - missing food list?"
@@ -53,7 +52,7 @@ restaurants.get '/:restaurant/:year/:week', (req, res) ->
     restaurant = req.params.restaurant.toLowerCase() + path.sep
     year = req.params.year + path.sep
     week = req.params.week + path.sep
-    filePath = app.__DIR + restaurant + year + week
+    filePath = '/' + restaurant + year + week
     fs.readFile filePath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file - missing food list?"
