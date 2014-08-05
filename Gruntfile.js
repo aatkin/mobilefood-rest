@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
         concurrent: {
             target: {
-                tasks: ['nodemon', 'watch'],
+                tasks: ['watch', 'nodemon'],
                 options: {
                     logConcurrentOutput: true
                 }
@@ -18,6 +18,10 @@ module.exports = function(grunt) {
             coffee: {
                 files: ['src/**/*.coffee'],
                 tasks: ['coffee']
+            },
+            test: {
+                files: ['test/**/*.coffee'],
+                tasks: ['mochaTest']
             }
         },
         nodemon: {
@@ -40,12 +44,20 @@ module.exports = function(grunt) {
             }
         },
         mochaTest: {
-            // TODO: add testing
+            test: {
+                options: {
+                    reporter: 'spec',
+                    require: 'coffee-script/register'
+                },
+                src: ['test/**/*.coffee']
+            }
         }
     });
 
     grunt.event.on('watch', function(action, filepath) {
-        grunt.config('coffee.compile.files', filepath);
+        if(filepath.match(/test\//)) {
+            grunt.config('mochaTest.test.src', filepath);
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -60,5 +72,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['compliment']);
     grunt.registerTask('compile', ['coffee']);
+    grunt.registerTask('tests', ['mochaTest']);
     grunt.registerTask('workflow', ['concurrent:target']);
 };
