@@ -2,16 +2,20 @@ express = require 'express'
 fs = require 'fs'
 path = require 'path'
 routes = require './routes'
-argv = app = config = log = dir = null
+argv = app = configfile = logfile = dir = null
 
-exports.init = init = ->
+exports.init = init = (config) ->
     try
-        config = argv.config || 'config.json'
-        log = argv.log || JSON.parse(fs.readFileSync(config)).logdir
-        dir = argv.dir || JSON.parse(fs.readFileSync(config)).dir
-        console.log "config: #{config}, log: #{log}, dir: #{dir}"
+        configfile = argv.config || config?.configfile || 'config.json'
+        logfile = argv.log || config?.logfile ||
+            JSON.parse(fs.readFileSync(configfile)).logfile
+        dir = argv.dir || config?.dir ||
+            JSON.parse(fs.readFileSync(configfile)).dir
+        # console.log "config: #{config}, log: #{log}, dir: #{dir}"
+        app.set('configfile', configfile)
+        app.set('logfile', logfile)
+        app.set('dir', dir)
         # app.enable 'trust proxy'
-        app.use(express.static(dir))
         app.use('/mobilerest', routes.log)
         app.use('/mobilerest', routes.restaurants)
         app.use('/', routes.defaultroute)

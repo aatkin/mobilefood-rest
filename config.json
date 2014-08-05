@@ -1,4 +1,4 @@
 {
   "dir": "/path/to/output",
-  "logdir": "/path/to/log"
+  "logfile": "/path/to/log"
 }

@@ -16,7 +16,8 @@ serveErrorMessage = (error, msg, res) ->
 exports.log = log = express.Router()
 
 log.get '/log', (req, res) ->
-    fs.readFile '/log', 'utf8', (err, data) ->
+    logpath = path.resolve(require('./app').app.get('logfile'))
+    fs.readFile logpath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file"
             serveErrorMessage(404, msg, res)
@@ -35,9 +36,12 @@ exports.restaurants = restaurants = express.Router()
 # Returns food list marked as 'current' from file system as JSON.
 #
 restaurants.get '/:restaurant/current', (req, res) ->
-    restaurant = req.params.restaurant.toLowerCase() + path.sep
-    filePath = '/' + restaurant + 'current' + path.sep
-    fs.readFile filePath, 'utf8', (err, data) ->
+    dir = require('./app').app.get('dir')
+    restaurant = req.params.restaurant.toLowerCase()
+    filepath = path.resolve(path.join(
+        dir, restaurant, 'current', "foodlist.json"))
+    console.log filepath
+    fs.readFile filepath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file - missing food list?"
             serveErrorMessage(404, msg, res)
@@ -49,11 +53,14 @@ restaurants.get '/:restaurant/current', (req, res) ->
 # Returns specified food list from file system as JSON.
 #
 restaurants.get '/:restaurant/:year/:week', (req, res) ->
-    restaurant = req.params.restaurant.toLowerCase() + path.sep
-    year = req.params.year + path.sep
-    week = req.params.week + path.sep
-    filePath = '/' + restaurant + year + week
-    fs.readFile filePath, 'utf8', (err, data) ->
+    dir = require('./app').app.get('dir')
+    restaurant = req.params.restaurant.toLowerCase()
+    year = req.params.year
+    week = req.params.week
+    filepath = path.resolve(path.join(
+        dir, restaurant, year, week, "foodlist.json"))
+    console.log filepath
+    fs.readFile filepath, 'utf8', (err, data) ->
         if err
             msg = "Error happened while reading file - missing food list?"
             serveErrorMessage(404, msg, res)
