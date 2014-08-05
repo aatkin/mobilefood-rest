@@ -33,8 +33,9 @@ stop = ->
         __CONFIG = __LOGPATH = __DIR = null
         console.log "closing server now"
 
+argv = require('minimist')(process.argv.slice(2))
+
 # main
 if not module.parent
-    argv = require('minimist')(process.argv.slice(2))
     init()
     start()
