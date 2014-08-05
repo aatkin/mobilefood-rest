@@ -12,22 +12,31 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            files: ['src/*.coffee'],
-            tasks: ['coffee'],
-            options: {
-                livereload: 'true'
+            gruntfile: {
+                files: 'Gruntfile.js'
+            },
+            coffee: {
+                files: ['src/**/*.coffee'],
+                tasks: ['coffee']
             }
         },
         nodemon: {
             dev: {
-                script: 'app.js'
+                script: 'build/app.js',
+                // options: {
+                //     args: ['--log=oo.log']
+                // }
             }
         },
         coffee: {
             compile: {
-                files: {
-                    "./app.js": "src/app.coffee"
-                }
+                expand: true,
+                flatten: true,
+                cwd: 'src',
+                src: ['*.coffee'],
+                dest: 'build/',
+                ext: '.js'
+
             }
         },
         mochaTest: {
