@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
         shell: {
             start: {
-                command: 'node build/app.js --dir=test/testdata'
+                command: 'node build/app.js --dir=test/testdata --port=4732'
             }
         },
         concurrent: {
