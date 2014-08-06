@@ -3,6 +3,11 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        shell: {
+            start: {
+                command: 'node build/app.js --dir=test/testdata'
+            }
+        },
         concurrent: {
             target: {
                 tasks: ['watch', 'nodemon'],
@@ -65,6 +70,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-shell');
 
     grunt.registerTask('compliment', function() {
         grunt.log.ok("You are so awesome!");
@@ -74,4 +80,5 @@ module.exports = function(grunt) {
     grunt.registerTask('compile', ['coffee']);
     grunt.registerTask('tests', ['mochaTest']);
     grunt.registerTask('workflow', ['concurrent:target']);
+    grunt.registerTask('run', ['coffee', 'shell'])
 };
