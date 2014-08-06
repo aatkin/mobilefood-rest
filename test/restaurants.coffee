@@ -23,26 +23,31 @@ describe 'restaurants RESTful GET-requests', ->
             request(app)
                 .get('/')
                 .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
                 .expect(400, done)
         it 'should return 400 given url \'\'', (done) ->
             request(app)
                 .get('')
                 .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
                 .expect(400, done)
         it 'should return 400 given url /mobilerest/unica', (done) ->
             request(app)
                 .get('/mobilerest/unica')
                 .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
                 .expect(400, done)
         it 'should return 400 given url /mobilerest/unica/food', (done) ->
             request(app)
                 .get('/mobilerest/unica/food')
                 .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
                 .expect(400, done)
         it 'should return 400 given url /mobilerest/unica/3/food/ls', (done) ->
             request(app)
                 .get('/mobilerest/unica/3/food/ls')
                 .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
                 .expect(400, done)
 
     describe 'restaurant urls, no files', ->
@@ -51,12 +56,14 @@ describe 'restaurants RESTful GET-requests', ->
                 request(app)
                     .get('/mobilerest/unica/2014/current')
                     .expect('Content-Type', /json/)
+                    .expect('Connection', /close/)
                     .expect(404, done)
         it 'should return 404 given url /mobilerest/unica/2014/34
             and no files to serve', (done) ->
                 request(app)
                     .get('/mobilerest/unica/2014/34')
                     .expect('Content-Type', /json/)
+                    .expect('Connection', /close/)
                     .expect(404, done)
 
     describe 'restaurant urls, fake data', ->
@@ -64,9 +71,11 @@ describe 'restaurants RESTful GET-requests', ->
             request(app)
                 .get('/mobilerest/unica/2014/33')
                 .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
                 .expect(200, done)
         it 'should return 200 given url /mobilerest/sodexo/2014/current', (done) ->
             request(app)
                 .get('/mobilerest/sodexo/2014/current')
                 .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
                 .expect(200, done)
