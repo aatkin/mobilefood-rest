@@ -7,6 +7,7 @@ serveErrorMessage = (error, msg, res) ->
         status: error,
         message: msg
     }
+    res.set("Connection", "close")
     res.status(error).json(message)
 
 #
@@ -23,6 +24,7 @@ log.get '/log', (req, res) ->
             serveErrorMessage(404, msg, res)
         else
             res.type 'text/plain'
+            res.set("Connection", "close")
             res.status(200).send(data)
 
 #
@@ -45,6 +47,7 @@ restaurants.get '/:restaurant/current', (req, res) ->
             msg = "Error happened while reading file - missing food list?"
             serveErrorMessage(404, msg, res)
         else
+            res.set("Connection", "close")
             res.status(200).json(data)
 
 #
@@ -63,6 +66,7 @@ restaurants.get '/:restaurant/:year/:week', (req, res) ->
             msg = "Error happened while reading file - missing food list?"
             serveErrorMessage(404, msg, res)
         else
+            res.set("Connection", "close")
             res.status(200).json(data)
 
 #
