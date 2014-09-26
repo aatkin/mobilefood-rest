@@ -80,5 +80,5 @@ module.exports = function(grunt) {
     grunt.registerTask('compile', ['coffee']);
     grunt.registerTask('tests', ['mochaTest']);
     grunt.registerTask('workflow', ['concurrent:target']);
-    grunt.registerTask('run', ['coffee', 'shell'])
+    grunt.registerTask('run', ['coffee', 'shell']);
 };
