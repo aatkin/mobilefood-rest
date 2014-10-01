@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Mobileservice/MobileREST/info</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+        <h1>Mobileservice/MobileREST: usage instructions</h1>
+
+        <hr />
+
+        <h2>Restaurant GET-requests</h2>
+
+        <p>The MobileREST-system currently supports only GET-requests. POST, PUT and DELETE are not yet supported (however they may be supported in the future).</p>
+
+        <p>Latest foodlist for a given :chain and :year may be retrieved as follows:</p>
+
+        <p><code>GET http://www.anssikin.eu/mobilerest/:chain/:year/current</code></p>
+
+        <p>Specific foodlist for a given :chain, :year and :week may be retrieved as follows:</p>
+
+        <p><code>GET http://www.anssikin.eu/mobilerest/:chain/:year/:week</code></p>
+
+        <p>Currently supported restaurant chains are Unica. Other restaurants chains are planned, such as Sodexo.</p>
+
+        <hr />
+
+        <h2>Miscellaneous</h2>
+
+        <p>This information page can always be reached with the following request:</p>
+
+        <p><code>GET http://www.anssikin.eu/mobilerest/info</code></p>
+
+        <p>Parser logs for debugging can be viewed with the following request:</p>
+
+        <p><code>GET http://www.anssikin.eu/mobilerest/log</code></p>
+    </body>
+</html>

@@ -53,18 +53,18 @@ describe 'restaurants RESTful GET-requests', ->
     describe 'restaurant urls, no files', ->
         it 'should return 404 given url /mobilerest/unica/2014/current
             and no files to serve', (done) ->
-                request(app)
-                    .get('/mobilerest/unica/2014/current')
-                    .expect('Content-Type', /json/)
-                    .expect('Connection', /close/)
-                    .expect(404, done)
+            request(app)
+                .get('/mobilerest/unica/2014/current')
+                .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
+                .expect(404, done)
         it 'should return 404 given url /mobilerest/unica/2014/34
             and no files to serve', (done) ->
-                request(app)
-                    .get('/mobilerest/unica/2014/34')
-                    .expect('Content-Type', /json/)
-                    .expect('Connection', /close/)
-                    .expect(404, done)
+            request(app)
+                .get('/mobilerest/unica/2014/34')
+                .expect('Content-Type', /json/)
+                .expect('Connection', /close/)
+                .expect(404, done)
 
     describe 'restaurant urls, fake data', ->
         it 'should return 200 given url /mobilerest/unica/2014/33', (done) ->
@@ -73,7 +73,8 @@ describe 'restaurants RESTful GET-requests', ->
                 .expect('Content-Type', /json/)
                 .expect('Connection', /close/)
                 .expect(200, done)
-        it 'should return 200 given url /mobilerest/sodexo/2014/current', (done) ->
+        it 'should return 200 given url
+            /mobilerest/sodexo/2014/current', (done) ->
             request(app)
                 .get('/mobilerest/sodexo/2014/current')
                 .expect('Content-Type', /json/)

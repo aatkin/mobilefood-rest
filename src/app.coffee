@@ -2,19 +2,23 @@ express = require 'express'
 fs = require 'fs'
 path = require 'path'
 routes = require './routes'
-argv = app = configfile = logfile = dir = null
+argv = app = configfile = logfile = infofile = dir = null
 
 exports.init = init = (config) ->
     try
         configfile = argv?.config || config?.configfile || 'config.json'
+        infofile = argv?.log || config?.logfile ||
+            JSON.parse(fs.readFileSync(configfile)).infofile
         logfile = argv?.log || config?.logfile ||
             JSON.parse(fs.readFileSync(configfile)).logfile
         dir = argv?.dir || config?.dir ||
             JSON.parse(fs.readFileSync(configfile)).dir
         app.set('configfile', configfile)
         app.set('logfile', logfile)
+        app.set('infofile', infofile)
         app.set('dir', dir)
         # app.enable 'trust proxy'
+        app.use('/mobilerest', routes.info)
         app.use('/mobilerest', routes.log)
         app.use('/mobilerest', routes.restaurants)
         app.use('/', routes.defaultroute)
@@ -31,7 +35,7 @@ exports.start = start = (p) ->
 exports.stop = stop = ->
     if app
         app.close
-        app = argv = config = log = dir = null
+        app = argv = config = logfile = infofile = dir = null
         console.log "closing server now"
 
 exports.app = app = express()
