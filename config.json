@@ -1,4 +1,4 @@
 {
-  "dir": "/path/to/output",
-  "logfile": "/path/to/log"
+  "port": 4730,
+  "mongo_address": "mongo/address"
 }
