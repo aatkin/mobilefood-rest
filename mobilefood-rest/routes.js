@@ -1,7 +1,6 @@
 var express = require('express');
-var mongoClient = require('mongodb').MongoClient;
 
-var mongo_address = require('./app').app.get('mongo_address');
+var db = require('./app').app.get('db');
 
 var serveErrorMsg = function(error, msg, res) {
     var message = {
@@ -15,34 +14,31 @@ var serveErrorMsg = function(error, msg, res) {
 //
 // Restaurant routing
 //
-exports.restaurants = restaurants = express.Router();
+exports.foods = foods = express.Router();
 
 // Return the latest foodlist for a given chain-restaurant-combo
 
-restaurants.get('/:chain/:restaurant/current', function(req, res, next) {
+foods.get('/chain/:chain/restaurant/:restaurant/current', function(req, res, next) {
     var chain = req.params.chain.toLowerCase();
     var restaurant = req.params.restaurant.toLowerCase();
     try {
-        mongoClient.connect(mongo_address, function(err, db) {
-            var collection = db.collection('restaurant');
-            collection
-                .find(
-                    {'restaurant_info.id': restaurant, 'parser_info.parser_name': chain},
-                    {'_id': 0, 'restaurant_info.id': 0})
-                .sort({'_id': -1})
-                .toArray(function(err, restaurants) {
-                    if (restaurants.length) {
-                        res.set('Connection', 'close');
-                        res.status(200).json(restaurants[0]);
-                    } else {
-                        console.log(
-                            'Didn\'t find any records for ' + chain + '/' + restaurant);
-                        res.set('Connection', 'close');
-                        res.status(200).json({});
-                    }
-                    db.close();
-                });
-        });
+        var collection = db.collection('foods');
+        collection
+            .find(
+                {'foodlist_info.id': restaurant, 'foodlist_info.chain': chain},
+                {'_id': 0, 'foodlist_info.id': 0, 'debug': 0})
+            .sort({'_id': -1})
+            .toArray(function(err, restaurants) {
+                if (restaurants.length) {
+                    res.set('Connection', 'close');
+                    res.status(200).json(restaurants[0]);
+                } else {
+                    console.log(
+                        'Didn\'t find any records for ' + chain + '/' + restaurant);
+                    res.set('Connection', 'close');
+                    res.status(200).json({});
+                }
+            });
     } catch (e) {
         console.error(e);
     }
@@ -50,37 +46,69 @@ restaurants.get('/:chain/:restaurant/current', function(req, res, next) {
 
 // Return the foodlist for a given chain-restaurant and year-week -combo
 
-restaurants.get('/:chain/:restaurant/:year/:week', function(req, res, next) {
+foods.get('/chain/:chain/restaurant/:restaurant/:year/:week', function(req, res, next) {
     var chain = req.params.chain.toLowerCase();
     var restaurant = req.params.restaurant.toLowerCase();
     var year = parseInt(req.params.year, 10);
     var week = parseInt(req.params.week, 10);
     try {
-        mongoClient.connect(mongo_address, function(err, db) {
-            var collection = db.collection('restaurant');
-            collection
-                .find(
-                    {
-                        'restaurant_info.id': restaurant,
-                        'parser_info.parser_name': chain,
-                        'foodlist_date.year': year,
-                        'foodlist_date.week_number': week
-                    },
-                    {'_id': 0, 'restaurant_info.id': 0})
-                .sort({'_id': -1})
-                .toArray(function(err, restaurants) {
-                    if (restaurants.length) {
-                        res.set('Connection', 'close');
-                        res.status(200).json(restaurants[0]);
-                    } else {
-                        console.log(
-                            'Didn\'t find any records for ' + chain + '/' + restaurant);
-                        res.set('Connection', 'close');
-                        res.status(200).json({});
-                    }
-                    db.close();
-                });
-        });
+        var collection = db.collection('foods');
+        collection
+            .find(
+                {
+                    'foodlist_info.id': restaurant,
+                    'foodlist_info.chain': chain,
+                    'foodlist_info.year': year,
+                    'foodlist_info.week_number': week
+                },
+                {'_id': 0, 'foodlist_info.id': 0, 'debug': 0})
+            .sort({'_id': -1})
+            .toArray(function(err, restaurants) {
+                if (restaurants.length) {
+                    res.set('Connection', 'close');
+                    res.status(200).json(restaurants[0]);
+                } else {
+                    console.log(
+                        'Didn\'t find any records for ' + chain + '/' + restaurant);
+                    res.set('Connection', 'close');
+                    res.status(200).json({});
+                }
+            });
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+//
+// Info routing
+//
+exports.info = info = express.Router();
+
+// Return restaurant information
+
+info.get('/chain/:chain/restaurant/:restaurant', function(req, res, next) {
+    var chain = req.params.chain.toLowerCase();
+    var restaurant = req.params.restaurant.toLowerCase();
+    try {
+        var collection = db.collection('info');
+        collection
+            .find(
+                {
+                    'restaurant_info.id': restaurant,
+                    'restaurant_info.chain': chain
+                },
+                {'_id': 0, 'restaurant_info.id': 0, 'debug': 0})
+            .toArray(function(err, info) {
+                if (info.length) {
+                    res.set('Connection', 'close');
+                    res.status(200).json(info[0]);
+                } else {
+                    console.log(
+                        'Didn\'t find any records for ' + chain + '/' + restaurant);
+                    res.set('Connection', 'close');
+                    res.status(200).json({});
+                }
+            });
     } catch (e) {
         console.error(e);
     }
