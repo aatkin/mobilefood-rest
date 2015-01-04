@@ -21,12 +21,23 @@ exports.foods = foods = express.Router();
 foods.get('/chain/:chain/restaurant/:restaurant/current', function(req, res, next) {
     var chain = req.params.chain.toLowerCase();
     var restaurant = req.params.restaurant.toLowerCase();
+    var filter = {
+        '_id': 0,
+        'foodlist_info.id': 0,
+        'debug': 0
+    };
+    if (debug) {
+        filter = {
+            '_id': 0,
+            'foodlist_info.id': 0
+        };
+    }
     try {
         var collection = db.collection('foods');
         collection
             .find(
                 {'foodlist_info.id': restaurant, 'foodlist_info.chain': chain},
-                {'_id': 0, 'foodlist_info.id': 0, 'debug': 0})
+                filter)
             .sort({'_id': -1})
             .toArray(function(err, restaurants) {
                 if (restaurants.length) {
@@ -51,6 +62,17 @@ foods.get('/chain/:chain/restaurant/:restaurant/:year/:week', function(req, res,
     var restaurant = req.params.restaurant.toLowerCase();
     var year = parseInt(req.params.year, 10);
     var week = parseInt(req.params.week, 10);
+    var filter = {
+        '_id': 0,
+        'foodlist_info.id': 0,
+        'debug': 0
+    };
+    if (debug) {
+        filter = {
+            '_id': 0,
+            'foodlist_info.id': 0
+        };
+    }
     try {
         var collection = db.collection('foods');
         collection
@@ -61,7 +83,7 @@ foods.get('/chain/:chain/restaurant/:restaurant/:year/:week', function(req, res,
                     'foodlist_info.year': year,
                     'foodlist_info.week_number': week
                 },
-                {'_id': 0, 'foodlist_info.id': 0, 'debug': 0})
+                filter)
             .sort({'_id': -1})
             .toArray(function(err, restaurants) {
                 if (restaurants.length) {
@@ -89,6 +111,18 @@ exports.info = info = express.Router();
 info.get('/chain/:chain/restaurant/:restaurant', function(req, res, next) {
     var chain = req.params.chain.toLowerCase();
     var restaurant = req.params.restaurant.toLowerCase();
+    var debug = req.query.debug ? 1 : 0;
+    var filter = {
+        '_id': 0,
+        'restaurant_info.id': 0,
+        'debug': 0
+    };
+    if (debug) {
+        filter = {
+            '_id': 0,
+            'restaurant_info.id': 0
+        };
+    }
     try {
         var collection = db.collection('info');
         collection
@@ -97,7 +131,7 @@ info.get('/chain/:chain/restaurant/:restaurant', function(req, res, next) {
                     'restaurant_info.id': restaurant,
                     'restaurant_info.chain': chain
                 },
-                {'_id': 0, 'restaurant_info.id': 0, 'debug': 0})
+                filter)
             .toArray(function(err, info) {
                 if (info.length) {
                     res.set('Connection', 'close');
