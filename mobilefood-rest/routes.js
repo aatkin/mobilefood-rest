@@ -19,6 +19,7 @@ exports.foods = foods = express.Router();
 // Return the latest foodlist for a given chain-restaurant-combo
 
 foods.get('/chain/:chain/restaurant/:restaurant/current', function(req, res, next) {
+    var start = new Date();
     var chain = req.params.chain.toLowerCase();
     var restaurant = req.params.restaurant.toLowerCase();
     var filter = {
@@ -37,6 +38,10 @@ foods.get('/chain/:chain/restaurant/:restaurant/current', function(req, res, nex
             .toArray(function(err, restaurants) {
                 if (restaurants.length) {
                     res.set('Connection', 'close');
+                    if (!filter.debug) {
+                        var end = new Date() - start;
+                        restaurants[0].debug.process_time = String(end) + 'ms';
+                    }
                     res.status(200).json(restaurants[0]);
                 } else {
                     console.log(
@@ -53,6 +58,7 @@ foods.get('/chain/:chain/restaurant/:restaurant/current', function(req, res, nex
 // Return the foodlist for a given chain-restaurant and year-week -combo
 
 foods.get('/chain/:chain/restaurant/:restaurant/:year/:week', function(req, res, next) {
+    var start = new Date();
     var chain = req.params.chain.toLowerCase();
     var restaurant = req.params.restaurant.toLowerCase();
     var year = parseInt(req.params.year, 10);
@@ -78,6 +84,10 @@ foods.get('/chain/:chain/restaurant/:restaurant/:year/:week', function(req, res,
             .toArray(function(err, restaurants) {
                 if (restaurants.length) {
                     res.set('Connection', 'close');
+                    if (!filter.debug) {
+                        var end = new Date() - start;
+                        restaurants[0].debug.process_time = String(end) + 'ms';
+                    }
                     res.status(200).json(restaurants[0]);
                 } else {
                     console.log(
@@ -99,6 +109,7 @@ exports.info = info = express.Router();
 // Return restaurant information
 
 info.get('/chain/:chain/restaurant/:restaurant', function(req, res, next) {
+    var start = new Date();
     var chain = req.params.chain.toLowerCase();
     var restaurant = req.params.restaurant.toLowerCase();
     var filter = {
@@ -119,6 +130,10 @@ info.get('/chain/:chain/restaurant/:restaurant', function(req, res, next) {
             .toArray(function(err, info) {
                 if (info.length) {
                     res.set('Connection', 'close');
+                    if (!filter.debug) {
+                        var end = new Date() - start;
+                        info[0].debug.process_time = String(end) + 'ms';
+                    }
                     res.status(200).json(info[0]);
                 } else {
                     console.log(
