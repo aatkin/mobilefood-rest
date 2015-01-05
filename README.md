@@ -1,4 +1,4 @@
-<!-- # mobilefood-rest [![Build Status](https://travis-ci.org/aatkin/mobilefood-rest.png)](https://travis-ci.org/aatkin/mobilefood-rest) -->
+<!-- # mobilefood-rest [![Build Status](https://drone.io/github.com/aatkin/mobilefood-rest/status.png)](https://drone.io/github.com/aatkin/mobilefood-rest/latest) -->
 
 # Mobilefood-REST
 
