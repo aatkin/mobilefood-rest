@@ -26,13 +26,7 @@ foods.get('/chain/:chain/restaurant/:restaurant/current', function(req, res, nex
         'foodlist_info.id': 0,
         'debug': 0
     };
-    var debug = req.query.debug ? 1 : 0;
-    if (debug) {
-        filter = {
-            '_id': 0,
-            'foodlist_info.id': 0
-        };
-    }
+    if (req.query.debug && req.query.debug.toLowerCase() == 'true') delete filter.debug;
     try {
         var collection = db.collection('foods');
         collection
@@ -68,13 +62,7 @@ foods.get('/chain/:chain/restaurant/:restaurant/:year/:week', function(req, res,
         'foodlist_info.id': 0,
         'debug': 0
     };
-    var debug = req.query.debug ? 1 : 0;
-    if (debug) {
-        filter = {
-            '_id': 0,
-            'foodlist_info.id': 0
-        };
-    }
+    if (req.query.debug && req.query.debug.toLowerCase() == 'true') delete filter.debug;
     try {
         var collection = db.collection('foods');
         collection
@@ -118,13 +106,7 @@ info.get('/chain/:chain/restaurant/:restaurant', function(req, res, next) {
         'restaurant_info.id': 0,
         'debug': 0
     };
-    var debug = req.query.debug ? 1 : 0;
-    if (debug) {
-        filter = {
-            '_id': 0,
-            'restaurant_info.id': 0
-        };
-    }
+    if (req.query.debug && req.query.debug.toLowerCase() == 'true') delete filter.debug;
     try {
         var collection = db.collection('info');
         collection
