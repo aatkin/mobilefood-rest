@@ -37,7 +37,7 @@ foods.get('/chain/:chain/restaurant/:restaurant/current', function(req, res, nex
             .toArray(function(err, restaurants) {
                 if (restaurants.length) {
                     res.set('Connection', 'close');
-                    if (restaurant[0].debug) {
+                    if (restaurants[0].debug) {
                         var end = new Date() - start;
                         restaurants[0].debug.process_time = String(end) + 'ms';
                     }
@@ -78,15 +78,112 @@ foods.get('/chain/:chain/restaurant/:restaurant/:year/:week', function(req, res,
                     'foodlist_info.week_number': week
                 },
                 filter)
-            .sort({'_id': -1})
             .toArray(function(err, restaurants) {
                 if (restaurants.length) {
                     res.set('Connection', 'close');
-                    if (restaurant[0].debug) {
+                    if (restaurants[0].debug) {
                         var end = new Date() - start;
                         restaurants[0].debug.process_time = String(end) + 'ms';
                     }
                     res.status(200).json(restaurants[0]);
+                } else {
+                    console.log(
+                        'Didn\'t find any records for ' + chain + '/' + restaurant);
+                    res.set('Connection', 'close');
+                    res.status(200).json({});
+                }
+            });
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+// Return a single days foods for a given chain-restaurant-combo
+foods.get('/chain/:chain/restaurant/:restaurant/:year/:week/:day', function(req, res, next) {
+    var start = new Date();
+    var chain = req.params.chain.toLowerCase();
+    var restaurant = req.params.restaurant.toLowerCase();
+    var year = parseInt(req.params.year, 10);
+    var week = parseInt(req.params.week, 10);
+    var day_filter = 'weekly_foods.' + req.params.day
+    var filter = {
+        '_id': 0,
+        'foodlist_info': 1
+    };
+    filter[day_filter] = 1;
+    if (req.query.debug && req.query.debug.toLowerCase() == 'true') filter.debug = 1;
+    try {
+        var collection = db.collection('foods');
+        collection
+            .find(
+                {
+                    'foodlist_info.id': restaurant,
+                    'foodlist_info.chain': chain,
+                    'foodlist_info.year': year,
+                    'foodlist_info.week_number': week
+                },
+                filter)
+            .toArray(function(err, restaurants) {
+                if (restaurants.length) {
+                    res.set('Connection', 'close');
+                    if (restaurants[0].debug) {
+                        var end = new Date() - start;
+                        restaurants[0].debug.process_time = String(end) + 'ms';
+                    }
+                    res.status(200).json(restaurants[0]);
+                } else {
+                    console.log(
+                        'Didn\'t find any records for ' + chain + '/' + restaurant);
+                    res.set('Connection', 'close');
+                    res.status(200).json({});
+                }
+            });
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+// Return a single days foods for all restaurants for given chain
+foods.get('/chain/:chain/:year/:week/:day', function(req, res, next) {
+    var start = new Date();
+    var chain = req.params.chain.toLowerCase();
+    var year = parseInt(req.params.year, 10);
+    var week = parseInt(req.params.week, 10);
+    var day_filter = 'weekly_foods.' + req.params.day
+    var filter = {
+        '_id': 0,
+        'foodlist_info': 1
+    };
+    filter[day_filter] = 1;
+    if (req.query.debug && req.query.debug.toLowerCase() == 'true') filter.debug = 1;
+    try {
+        var collection = db.collection('foods');
+        collection
+            .find(
+                {
+                    'foodlist_info.chain': chain,
+                    'foodlist_info.year': year,
+                    'foodlist_info.week_number': week
+                },
+                filter)
+            .toArray(function(err, restaurants) {
+                if (restaurants.length) {
+                    res.set('Connection', 'close');
+                    var result = restaurants;
+                    if (restaurants[0].debug) {
+                        var end = new Date() - start;
+                        restaurants[0].debug.process_time = String(end) + 'ms';
+                        var debug = restaurants[0].debug;
+                        restaurants = restaurants.map(function(x) {
+                            delete x.debug;
+                            return x;
+                        });
+                        result = {
+                            "debug": debug,
+                            "restaurants": restaurants
+                        }
+                    }
+                    res.status(200).json(result);
                 } else {
                     console.log(
                         'Didn\'t find any records for ' + chain + '/' + restaurant);
