@@ -214,7 +214,7 @@ foods.get('/chain/:chain/:year/:week/:day', function(req, res, next) {
                     res.status(200).json(result);
                 } else {
                     console.log(
-                        'Didn\'t find any records for ' + chain + '/' + restaurant);
+                        'Didn\'t find any records for ' + chain + '/' + week + '/' + req.params.day);
                     res.set('Connection', 'close');
                     res.status(200).json({});
                 }
